@@ -12,20 +12,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText firstname,lastname;
+    EditText firstname, lastname;
     TextView androidchoice;
-    Button play,reset;
+    Button play, reset;
     Spinner spinner;
-    String playerchoice,computerchoice;
+    String playerchoice, computer_choice;
+    DatabaseReference db;
 
-
-
-
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,121 +33,75 @@ public class MainActivity extends AppCompatActivity {
 
 
         firstname = findViewById(R.id.fname);
-        lastname=findViewById(R.id.lname);
-        androidchoice =findViewById(R.id.androidchoice);
-        play =findViewById(R.id.play);
-        reset=findViewById(R.id.reset);
-        spinner=findViewById(R.id.spinner);
+        lastname = findViewById(R.id.lname);
+        androidchoice = findViewById(R.id.androidchoice);
+        play = findViewById(R.id.play);
+        reset = findViewById(R.id.reset);
+        spinner = findViewById(R.id.spinner);
+        db = FirebaseDatabase.getInstance().getReference("game");
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
+                 playerchoice= (String) spinner.getSelectedItem();
+                String message = play_turn(playerchoice);
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+               // Game g= new Game();
+                //db.push().getKey();
+                //db.child().setValue();
 
 
-
-
-play.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-   //String sname=firstname.getText();
-  // String lname = lastname.getText();
-
-
-   String pitem = (String) spinner.getSelectedItem();
-        play_turn(pitem);
-
-    }
-});
-
-
-
+            }
+        });
     }
 
-    private void play_turn(String playerchoice) {
+    private  String play_turn(String playerchoice) {
 
+         String p= playerchoice;
+        // Toast.makeText(MainActivity.this,p,Toast.LENGTH_LONG).show();
 
+        String computer_choice = " ";
         final Random rand = new Random();
-        int randInt = rand.nextInt(100)+1;
+        int randInt = rand.nextInt(100) + 1;
 
-        if(randInt<34)
-        {
-            computerchoice="rock";
+        if (randInt < 34) {
+            computer_choice = "ROCK";
             androidchoice.setText("ROCK");
 
-        }
-        else if(randInt>33 && randInt<67)
-        {
-            computerchoice="paper";
+        } else if (randInt > 33 && randInt < 67) {
+            computer_choice = "PAPER";
             androidchoice.setText("PAPER");
-        }
-        else if(randInt>67)
-        {
-            computerchoice="scissor";
+        } else if (randInt > 67) {
+            computer_choice = "SCISSOR";
             androidchoice.setText("SCISSOR");
 
         }
 
 
+        if (p == computer_choice) {
 
-        if (playerchoice == computerchoice)
-        {
+            return "Nobody Win";
 
-            Toast.makeText(MainActivity.this,"Nobody Win",Toast.LENGTH_LONG).show();
+        } else if (p == "ROCK" && computer_choice == "PAPER") {
 
+            return "Paper Beats Rock,Computer won";
+        } else if (p == "ROCK" && computer_choice == "SCISSOR") {
+
+            return "Rock beats scissors,You won";
+        } else if (p == "PAPER" && computer_choice == "ROCK") {
+
+            return "Paper Beats Rock,You won";
+        } else if (p == "PAPER" && computer_choice == "SCISSOR") {
+            return "Scissor beat paper, Computer Won ";
+        } else if (p== "SCISSOR" && computer_choice == "PAPER") {
+            return "Scissor beats paper,you won";
+        } else if (p == "SCISSOR" && computer_choice == "ROCK") {
+
+            return "Rock beats scissor,Computer won";
         }
+        else
+            return "no idea";
 
-
-
-        else if(playerchoice=="rock" && computerchoice=="paper")
-        {
-
-            Toast.makeText(MainActivity.this,"Paper Beats Rock,Computer won",Toast.LENGTH_LONG).show();
-        }
-
-        else if(playerchoice=="rock" && computerchoice=="scissor")
-        {
-
-            Toast.makeText(MainActivity.this,"Rock beats scissors,You won",Toast.LENGTH_LONG).show();
-        }
-
-
-
-
-
-
-
-
-        else if(playerchoice=="paper" && computerchoice=="rock")
-        {
-
-            Toast.makeText(MainActivity.this,"Paper Beats Rock,You won",Toast.LENGTH_LONG).show();
-        }
-
-
-        else if(playerchoice=="paper" && computerchoice=="scissor")
-        {
-
-            Toast.makeText(MainActivity.this,"Scissor beat paper, Computer Won ",Toast.LENGTH_LONG).show();
-        }
-
-
-
-
-        else if(playerchoice=="scissor" && computerchoice=="paper")
-        {
-
-            Toast.makeText(MainActivity.this,"Scissor beats paper,you won",Toast.LENGTH_LONG).show();
-        }
-        else if(playerchoice=="scissor" && computerchoice=="rock")
-        {
-
-            Toast.makeText(MainActivity.this,"Rock beats scissor,Computer won",Toast.LENGTH_LONG).show();
-        }
-
-
-
-
-
-
-    }
-    }
-
-
+    } }
