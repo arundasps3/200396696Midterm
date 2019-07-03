@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">200396696Midterm</string>
+    <string name="PLAY">play</string>
+    <string name="play">PLAY</string>
+    <string name="RESET">RESET</string>
+
+    <string-array name="Array">array</string-array>
+    <string-array name="Items">
+        <item name="ROCK">ROCK</item>
+        <item name="SCISSOR">SCISSOR</item>
+        <item name="PAPER">PAPER</item>
+        Items</string-array>
+</resources>
